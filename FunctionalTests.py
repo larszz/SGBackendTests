@@ -1,49 +1,87 @@
 import random
 import time
+import datetime as dt
 
-directory = "/home/work/SGTest/PythonTest/"
-samples_filename = "teststrings_100.txt"
+changes_directory = "/tmp/sauvegarde_tests/"
 
-file_prefix = "testfile"
+small_data_file = "small_data.txt"
+big_data_file = "big_data.txt"
 
 
-# number of files to create
-number_of_files = 3
+filename_A = "Datei_A.txt"
+filepath_A = changes_directory + filename_A
 
-# number of changes
-number_of_changes = 10
+filename_B = "Datei_B.txt"
+filepath_B = changes_directory + filename_B
 
-# set file for sample data depending on the needed number of changes
-if number_of_changes > 100:
-    samples_filename = "teststrings_1000.txt"
-elif number_of_changes > 1000:
-    samples_filename = "teststrings_100000.txt"
+sleeptime = 10  # type: float
 
-sleeptime = 1  # type: float
+def wait_until_time_reached(start_time = None):
+    # interval to check for reached time
+    check_interval = 0.5
+
+    # set time to next full minute if not set
+    if start_time is None:
+        now = dt.datetime.now().time()
+        if now.minute == 59:
+            if now.hour == 23:
+                start_time = dt.time(0,0)
+            else:
+                start_time = dt.time(now.hour + 1, 0)
+        else:
+            start_time = dt.time(now.hour, now.minute + 1)
+
+    print('Starting at: ' + str(start_time))
+    while dt.datetime.now().time() < start_time:
+        print '.',
+        time.sleep(check_interval)
+    print('\n')
+
 
 if __name__ == '__main__':
-    print("Using Testdata from " + str(samples_filename))
-    print("Sleep interval: " + str(sleeptime) + "s\n\n")
-
-    with open(samples_filename) as file:
-
-        sample_lines = file.readlines()
-
-        filelist = []
-        for i in range(number_of_files):
-            fn = directory + file_prefix + str(i) + ".txt"
-            filelist.append(fn)
 
 
-        # make file changes
-        fileindex = 0
-        for i in range(number_of_changes):
-            print(str(i) + "...")
-            file = open(filelist[fileindex], "w")
-            file.write(sample_lines[i])
-            file.close()
-            fileindex = (fileindex + 1) % number_of_files
-            time.sleep(sleeptime)
+    # read data to insert
+    small_data = None
+    big_data = None
 
+    with open(small_data_file) as sd_file:
+        small_data = sd_file.read()
+        sd_file.close()
+
+    with open(big_data_file) as bd_file:
+        big_data = bd_file.read()
+        bd_file.close()
+
+    # start at specific time
+    wait_until_time_reached()
+
+    # create empty file A
+    file_A = open(filepath_A, 'w')
+    file_A.close()
+    print(str(dt.datetime.now().time())+"\tFile A created, empty.")
+    time.sleep(sleeptime)
+
+    # add small data (X) to file A
+    file_A = open(filepath_A, 'w')
+    file_A.write(small_data)
+    file_A.close()
+    print(str(dt.datetime.now().time()) + "\tSmall data (X) written to File A.")
+    time.sleep(sleeptime)
+
+    # after 10 sec: overwrite A with big data (Y)
+    file_A = open(filepath_A, 'w')
+    file_A.write(big_data)
+    file_A.close()
+    print(str(dt.datetime.now().time()) + "\tBig data (X) written to File A.")
+    time.sleep(sleeptime)
+
+    # create new file B, containing small data (X)
+    file_B = open(filepath_B, 'w')
+    file_B.write(small_data)
+    file_B.close()
+    print(str(dt.datetime.now().time()) + "\tFile B created with small data (X).")
+
+    print('Test done.')
 
 
