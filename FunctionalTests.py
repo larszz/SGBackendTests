@@ -2,7 +2,7 @@ import random
 import time
 import datetime as dt
 
-changes_directory = "/tmp/sauvegarde_tests/"
+changes_directory = "/home/work/sauvegarde_test/"
 
 small_data_file = "small_data.txt"
 big_data_file = "big_data.txt"
