@@ -2,7 +2,7 @@ import random
 import time
 import datetime as dt
 
-changes_directory = "/home/work/sauvegarde_test/"
+changes_directory = "/home/work/sauvegarde_test/performance/"
 
 small_data_file = "small_data.txt"
 big_data_file = "big_data.txt"
@@ -14,7 +14,7 @@ filepath_A = changes_directory + filename_A
 filename_B = "Datei_B.txt"
 filepath_B = changes_directory + filename_B
 
-sleeptime = 10  # type: float
+sleeptime = 2  # type: float
 
 def wait_until_time_reached(start_time = None):
     # interval to check for reached time
@@ -54,7 +54,7 @@ if __name__ == '__main__':
         bd_file.close()
 
     # start at specific time
-    wait_until_time_reached()
+    #wait_until_time_reached()
 
     # create empty file A
     file_A = open(filepath_A, 'w')
