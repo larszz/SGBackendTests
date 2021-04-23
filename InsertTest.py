@@ -26,7 +26,7 @@ if __name__ == '__main__':
     print("Sleep interval: " + str(sleeptime) + "s\n\n")
 
     wait = 3
-    print('Start in: ' + str(wait) + 'sekonds')
+    print('Start in: ' + str(wait) + 'seconds')
     time.sleep(wait)
 
     with open(samples_filename) as file:
